@@ -8,15 +8,15 @@
 #ifndef SERVO_H
 #define SERVO_H
 
-#ifndef F_CPU											// if not defined in main
-#define F_CPU  16000000UL								// set a safe default baud rate
+#ifndef F_CPU											// Ff not defined in main
+#define F_CPU  16000000UL								// Set a safe default baud rate
 
 
 #define T1_Prescale 8
 
-#define SERVO_PERIOD F_CPU/1000000*20000/T1_Prescale	// Beregner periode i antall klokkesykluser
-#define SERVO_MAX F_CPU/1000000*2100/T1_Prescale		// Teoretisk maks, må kanskje justeres
-#define SERVO_MIN F_CPU/1000000*480/T1_Prescale			// Teoretisk min, må kanskje justeres
+#define SERVO_PERIOD F_CPU/1000000*20000/T1_Prescale	// Calculates servo period in number of clock cycles
+#define SERVO_MAX F_CPU/1000000*2100/T1_Prescale		// Servo max value
+#define SERVO_MIN F_CPU/1000000*480/T1_Prescale			// Servo min value
 
 
 void timer1PWMInit(void);

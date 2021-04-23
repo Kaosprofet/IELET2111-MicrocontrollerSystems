@@ -15,6 +15,7 @@
 int main(void) {
     timer1PWMInit();
     while (1) {
+		calServo(); // Calibrate the servo to find min/max values
     }
 }
 

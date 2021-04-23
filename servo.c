@@ -2,9 +2,9 @@
 #include "servo.h"
 
 void timer1PWMInit(void) {
-	DDRB = (1<<DDB1);											// Setter PB1 som utgang
-	TCCR1A = (1<<COM1A1)|(0<<COM1A0)|(1<<WGM11)|(0<<WGM10);		// Setter fast PWM og non-inverting mode
-	TCCR1B = (1<<CS11)|(1<<WGM13)|(1<<WGM12);					// Fast PWM og setter prescaling
+	DDRB = (1<<DDB1);											// Setting PB1 as output
+	TCCR1A = (1<<COM1A1)|(0<<COM1A0)|(1<<WGM11)|(0<<WGM10);		// Setting fast PWM and non-inverting mode
+	TCCR1B = (1<<CS11)|(1<<WGM13)|(1<<WGM12);					// Fast PWM and set prescaling
 	ICR1 = SERVO_PERIOD;
 }
 
