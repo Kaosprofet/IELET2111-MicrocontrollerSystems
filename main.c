@@ -5,15 +5,16 @@
  * Author : Henrik M. Arnesen
  */ 
 
+#define F_CPU 16000000UL
+
 #include <avr/io.h>
-#include <servo.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include "servo.h"
 
-
-int main(void)
-{
-    /* Replace with your application code */
-    while (1) 
-    {
+int main(void) {
+    timer1PWMInit();
+    while (1) {
     }
 }
 
