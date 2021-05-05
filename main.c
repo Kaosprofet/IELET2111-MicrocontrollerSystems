@@ -28,11 +28,10 @@ void runServo(uint16_t temp);
 
 int main(void) {
     timer1PWMInit();
-	temp = 1023;
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
-		//temp = // ADC value
+		temp = 1023; // Bytt ut med ACD lesing
 		runServo(temp);
     }
 }
