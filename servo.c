@@ -1,4 +1,10 @@
+
+#ifndef F_CPU
+#define F_CPU  16000000UL
+#endif
+
 #include <avr/io.h>
+#include <util/delay.h>
 #include "servo.h"
 
 void timer1PWMInit(void) {
@@ -13,4 +19,8 @@ void calServo(void) {
 	_delay_ms(1000);
 	OCR1A = SERVO_MAX;
 	_delay_ms(1000);
+}
+
+void runServo(uint16_t temp) {
+	OCR1A = temp;
 }
