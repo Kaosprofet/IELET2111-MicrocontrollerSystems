@@ -3,7 +3,7 @@
 
 
 uint16_t temp_adc_read(void) {
-  ADMUX = (0<<MUX0);
+  ADMUX = (ADMUX & 0xF0) | (0 & 0x0F);;
   ADCSRA |= (1<<ADSC);
   do {} while (ADCSRA & (1<<ADSC));
   uint8_t vall = ADCL;
@@ -24,7 +24,7 @@ void adc_init(void) {
 }
 
 uint16_t light_adc_read(void) {
-  ADMUX = (1<<MUX0);
+  ADMUX = (ADMUX & 0xF0)|(1 & 0x0F);
   ADCSRA |= (1<<ADSC);
   do {} while (ADCSRA & (1<<ADSC));
   uint8_t vall = ADCL;
