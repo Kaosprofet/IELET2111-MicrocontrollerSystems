@@ -16,10 +16,11 @@
 #include "usart.h"
 
 uint16_t temp = 0;
+uint16_t light = 0;
 
 int main(void) {
     timer1PWMInit();
-	adc_init(0);
+	adc_init();
 	initUSART();
 	runServo(0);
 	_delay_ms(1000);
@@ -27,7 +28,8 @@ int main(void) {
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
-		temp = adc_read();
+		temp = temp_adc_read();
+		light = light_adc_read();
 		runServo(temp);
 		_delay_ms(1000);
 	
@@ -37,11 +39,14 @@ int main(void) {
 }
 
 ISR(INT0_vect) {
-	printString("Value:" );
+	printString("Temp value:" );
 	printWord(temp);
+	crnl();
+	printString("Light value:" );
+	printWord(light);
 	crnl();
 }
 
-ISR(INT1_vect) {
+ISR(INT1_vect) { // For senere bruk
 	
 }

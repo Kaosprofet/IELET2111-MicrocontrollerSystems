@@ -1,4 +1,5 @@
 
 
-void adc_init(int pin);
-uint16_t adc_read(void);
+void adc_init(void);
+uint16_t temp_adc_read(void);
+uint16_t light_adc_read(void);
