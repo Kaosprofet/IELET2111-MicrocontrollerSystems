@@ -19,6 +19,7 @@ uint16_t temp = 0;
 uint16_t light = 0;
 
 int main(void) {
+    // Initialiserer de forskjellige komponentene
     timer1PWMInit();
 	adc_init();
 	initUSART();
@@ -26,8 +27,9 @@ int main(void) {
 	_delay_ms(1000);
 	initInterupt();
     while (1) {
-		//calServo(); // Calibrate the servo to find min/max values
-		
+        // Hovedloopen
+
+		//calServo(); // Kalibrer servoen
 		temp = temp_adc_read();
 		light = light_adc_read();
 		runServo(temp);
@@ -42,8 +44,4 @@ ISR(INT0_vect) {
 	printString("Light value:" );
 	printWord(light);
 	crnl();
-}
-
-ISR(INT1_vect) { // For senere bruk
-	
 }
