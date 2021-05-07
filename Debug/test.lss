@@ -3,31 +3,31 @@ test.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  0000018a  2**0
+  0 .data         00000000  00800100  00800100  0000022e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000116  00000000  00000000  00000074  2**1
+  1 .text         000001ba  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000002  00800100  00800100  0000018a  2**0
+  2 .bss          00000002  00800100  00800100  0000022e  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  0000018a  2**0
+  3 .comment      00000030  00000000  00000000  0000022e  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000001bc  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000260  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000078  00000000  00000000  000001fc  2**0
+  5 .debug_aranges 000000a0  00000000  00000000  000002a0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000091e  00000000  00000000  00000274  2**0
+  6 .debug_info   00000a67  00000000  00000000  00000340  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000079c  00000000  00000000  00000b92  2**0
+  7 .debug_abbrev 00000887  00000000  00000000  00000da7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000452  00000000  00000000  0000132e  2**0
+  8 .debug_line   000005a6  00000000  00000000  0000162e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000009c  00000000  00000000  00001780  2**2
+  9 .debug_frame  000000d0  00000000  00000000  00001bd4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000410  00000000  00000000  0000181c  2**0
+ 10 .debug_str    00000433  00000000  00000000  00001ca4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000090  00000000  00000000  00001c2c  2**0
+ 11 .debug_loc    000000ff  00000000  00000000  000020d7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000048  00000000  00000000  00001cbc  2**0
+ 12 .debug_ranges 00000060  00000000  00000000  000021d6  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -81,8 +81,8 @@ Disassembly of section .text:
   7e:	a2 30       	cpi	r26, 0x02	; 2
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
-  84:	0e 94 68 00 	call	0xd0	; 0xd0 <main>
-  88:	0c 94 89 00 	jmp	0x112	; 0x112 <_exit>
+  84:	0e 94 6e 00 	call	0xdc	; 0xdc <main>
+  88:	0c 94 db 00 	jmp	0x1b6	; 0x1b6 <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -137,59 +137,165 @@ void adc_init(void) {
   cc:	90 bf       	out	0x30, r25	; 48
   ce:	08 95       	ret
 
-000000d0 <main>:
-#include "servo.h"
+000000d0 <initInterupt>:
+#include <avr/interrupt.h>
+#include "int.h"
+
+void initInterupt(void){
+	PORTD = (1<<intPin);	// Internal pullup 
+  d0:	84 e0       	ldi	r24, 0x04	; 4
+  d2:	8b b9       	out	0x0b, r24	; 11
+	EIMSK = (1<<INT0);		// Enable interupt 0
+  d4:	81 e0       	ldi	r24, 0x01	; 1
+  d6:	8d bb       	out	0x1d, r24	; 29
+	sei();					// Enable global interupts
+  d8:	78 94       	sei
+  da:	08 95       	ret
+
+000000dc <main>:
+#include "int.h"
 
 uint16_t temp = 0;
 
 int main(void) {
     timer1PWMInit();
-  d0:	0e 94 75 00 	call	0xea	; 0xea <timer1PWMInit>
+  dc:	0e 94 86 00 	call	0x10c	; 0x10c <timer1PWMInit>
 	adc_init();
-  d4:	0e 94 56 00 	call	0xac	; 0xac <adc_init>
+  e0:	0e 94 56 00 	call	0xac	; 0xac <adc_init>
+	initInterupt();
+  e4:	0e 94 68 00 	call	0xd0	; 0xd0 <initInterupt>
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
 		temp = adc_read();
-  d8:	0e 94 48 00 	call	0x90	; 0x90 <adc_read>
-  dc:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
-  e0:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+  e8:	0e 94 48 00 	call	0x90	; 0x90 <adc_read>
+  ec:	90 93 01 01 	sts	0x0101, r25	; 0x800101 <__DATA_REGION_ORIGIN__+0x1>
+  f0:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 		runServo(temp);
-  e4:	0e 94 84 00 	call	0x108	; 0x108 <runServo>
-  e8:	f7 cf       	rjmp	.-18     	; 0xd8 <main+0x8>
-
-000000ea <timer1PWMInit>:
+  f4:	0e 94 95 00 	call	0x12a	; 0x12a <runServo>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  ea:	82 e0       	ldi	r24, 0x02	; 2
-  ec:	84 b9       	out	0x04, r24	; 4
-  ee:	82 e8       	ldi	r24, 0x82	; 130
-  f0:	80 93 80 00 	sts	0x0080, r24	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
-  f4:	8a e1       	ldi	r24, 0x1A	; 26
-  f6:	80 93 81 00 	sts	0x0081, r24	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
-  fa:	80 e4       	ldi	r24, 0x40	; 64
-  fc:	9c e9       	ldi	r25, 0x9C	; 156
-  fe:	90 93 87 00 	sts	0x0087, r25	; 0x800087 <__TEXT_REGION_LENGTH__+0x7f8087>
- 102:	80 93 86 00 	sts	0x0086, r24	; 0x800086 <__TEXT_REGION_LENGTH__+0x7f8086>
- 106:	08 95       	ret
+  f8:	2f ef       	ldi	r18, 0xFF	; 255
+  fa:	83 ed       	ldi	r24, 0xD3	; 211
+  fc:	90 e3       	ldi	r25, 0x30	; 48
+  fe:	21 50       	subi	r18, 0x01	; 1
+ 100:	80 40       	sbci	r24, 0x00	; 0
+ 102:	90 40       	sbci	r25, 0x00	; 0
+ 104:	e1 f7       	brne	.-8      	; 0xfe <main+0x22>
+ 106:	00 c0       	rjmp	.+0      	; 0x108 <main+0x2c>
+ 108:	00 00       	nop
+ 10a:	ee cf       	rjmp	.-36     	; 0xe8 <main+0xc>
 
-00000108 <runServo>:
-	OCR1A = SERVO_MAX;
-	_delay_ms(1000);
+0000010c <timer1PWMInit>:
+#include <avr/io.h>
+#include <util/delay.h>
+#include "servo.h"
+
+void timer1PWMInit(void) {
+	DDRB = (1<<SERVO_PIN);										// Setting PB1 as output
+ 10c:	82 e0       	ldi	r24, 0x02	; 2
+ 10e:	84 b9       	out	0x04, r24	; 4
+	TCCR1A = (1<<COM1A1)|(0<<COM1A0)|(1<<WGM11)|(0<<WGM10);		// Setting fast PWM and non-inverting mode
+ 110:	82 e8       	ldi	r24, 0x82	; 130
+ 112:	80 93 80 00 	sts	0x0080, r24	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
+	TCCR1B = (1<<CS11)|(1<<WGM13)|(1<<WGM12);					// Fast PWM and set prescaling
+ 116:	8a e1       	ldi	r24, 0x1A	; 26
+ 118:	80 93 81 00 	sts	0x0081, r24	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
+	ICR1 = SERVO_PERIOD;
+ 11c:	80 e4       	ldi	r24, 0x40	; 64
+ 11e:	9c e9       	ldi	r25, 0x9C	; 156
+ 120:	90 93 87 00 	sts	0x0087, r25	; 0x800087 <__TEXT_REGION_LENGTH__+0x7f8087>
+ 124:	80 93 86 00 	sts	0x0086, r24	; 0x800086 <__TEXT_REGION_LENGTH__+0x7f8086>
+ 128:	08 95       	ret
+
+0000012a <runServo>:
 }
 
 void runServo(uint16_t temp) {
+	temp = 1023-temp;
+ 12a:	2f ef       	ldi	r18, 0xFF	; 255
+ 12c:	33 e0       	ldi	r19, 0x03	; 3
+ 12e:	28 1b       	sub	r18, r24
+ 130:	39 0b       	sbc	r19, r25
+	temp = (temp - ADC_MIN) * (SERVO_MAX - SERVO_MIN) / (ADC_MAX - ADC_MIN) + SERVO_MIN;	// Mapping value for servo
+ 132:	a8 ed       	ldi	r26, 0xD8	; 216
+ 134:	be e0       	ldi	r27, 0x0E	; 14
+ 136:	0e 94 cc 00 	call	0x198	; 0x198 <__umulhisi3>
+ 13a:	2f ef       	ldi	r18, 0xFF	; 255
+ 13c:	33 e0       	ldi	r19, 0x03	; 3
+ 13e:	40 e0       	ldi	r20, 0x00	; 0
+ 140:	50 e0       	ldi	r21, 0x00	; 0
+ 142:	0e 94 aa 00 	call	0x154	; 0x154 <__udivmodsi4>
+ 146:	20 55       	subi	r18, 0x50	; 80
+ 148:	3b 4f       	sbci	r19, 0xFB	; 251
 	OCR1A = temp;
- 108:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
- 10c:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
- 110:	08 95       	ret
+ 14a:	30 93 89 00 	sts	0x0089, r19	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
+ 14e:	20 93 88 00 	sts	0x0088, r18	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
+ 152:	08 95       	ret
 
-00000112 <_exit>:
- 112:	f8 94       	cli
+00000154 <__udivmodsi4>:
+ 154:	a1 e2       	ldi	r26, 0x21	; 33
+ 156:	1a 2e       	mov	r1, r26
+ 158:	aa 1b       	sub	r26, r26
+ 15a:	bb 1b       	sub	r27, r27
+ 15c:	fd 01       	movw	r30, r26
+ 15e:	0d c0       	rjmp	.+26     	; 0x17a <__udivmodsi4_ep>
 
-00000114 <__stop_program>:
- 114:	ff cf       	rjmp	.-2      	; 0x114 <__stop_program>
+00000160 <__udivmodsi4_loop>:
+ 160:	aa 1f       	adc	r26, r26
+ 162:	bb 1f       	adc	r27, r27
+ 164:	ee 1f       	adc	r30, r30
+ 166:	ff 1f       	adc	r31, r31
+ 168:	a2 17       	cp	r26, r18
+ 16a:	b3 07       	cpc	r27, r19
+ 16c:	e4 07       	cpc	r30, r20
+ 16e:	f5 07       	cpc	r31, r21
+ 170:	20 f0       	brcs	.+8      	; 0x17a <__udivmodsi4_ep>
+ 172:	a2 1b       	sub	r26, r18
+ 174:	b3 0b       	sbc	r27, r19
+ 176:	e4 0b       	sbc	r30, r20
+ 178:	f5 0b       	sbc	r31, r21
+
+0000017a <__udivmodsi4_ep>:
+ 17a:	66 1f       	adc	r22, r22
+ 17c:	77 1f       	adc	r23, r23
+ 17e:	88 1f       	adc	r24, r24
+ 180:	99 1f       	adc	r25, r25
+ 182:	1a 94       	dec	r1
+ 184:	69 f7       	brne	.-38     	; 0x160 <__udivmodsi4_loop>
+ 186:	60 95       	com	r22
+ 188:	70 95       	com	r23
+ 18a:	80 95       	com	r24
+ 18c:	90 95       	com	r25
+ 18e:	9b 01       	movw	r18, r22
+ 190:	ac 01       	movw	r20, r24
+ 192:	bd 01       	movw	r22, r26
+ 194:	cf 01       	movw	r24, r30
+ 196:	08 95       	ret
+
+00000198 <__umulhisi3>:
+ 198:	a2 9f       	mul	r26, r18
+ 19a:	b0 01       	movw	r22, r0
+ 19c:	b3 9f       	mul	r27, r19
+ 19e:	c0 01       	movw	r24, r0
+ 1a0:	a3 9f       	mul	r26, r19
+ 1a2:	70 0d       	add	r23, r0
+ 1a4:	81 1d       	adc	r24, r1
+ 1a6:	11 24       	eor	r1, r1
+ 1a8:	91 1d       	adc	r25, r1
+ 1aa:	b2 9f       	mul	r27, r18
+ 1ac:	70 0d       	add	r23, r0
+ 1ae:	81 1d       	adc	r24, r1
+ 1b0:	11 24       	eor	r1, r1
+ 1b2:	91 1d       	adc	r25, r1
+ 1b4:	08 95       	ret
+
+000001b6 <_exit>:
+ 1b6:	f8 94       	cli
+
+000001b8 <__stop_program>:
+ 1b8:	ff cf       	rjmp	.-2      	; 0x1b8 <__stop_program>
