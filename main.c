@@ -27,15 +27,21 @@ int main(void) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
 		temp = adc_read();
-		//runServo(temp);
-		//_delay_ms(1000);
+		runServo(temp);
+		_delay_ms(1000);
+		printString("Value:" );
+		printDecimal(temp);
+		crnl();
+		
+		
+		
     }
 }
 
 ISR(INT0_vect) {
-	runServo(255);
+	
 }
 
 ISR(INT1_vect) {
-	runServo(0);
+	
 }

@@ -153,3 +153,26 @@ uint8_t getNumber(void) {
   } while (thisChar != '\r');                     /* until type return */
   return (100 * (hundreds - '0') + 10 * (tens - '0') + ones - '0');
 }
+
+void printDecimal(uint16_t number){
+  //send 16 bit unsigned integer as up to 4 decimal digits
+  if(number >=1000) 
+  {
+    transmitByte('0'+(number /1000)%10);
+  }
+  if(number >=100)
+  {
+    transmitByte('0'+((number /100)%10));
+  }
+  if(number >=10)
+  {
+    transmitByte('0'+((number /10)%10));
+  }
+  transmitByte('0'+(number %10));
+}
+
+void crnl(void) {
+  //carriage return and newline
+  transmitByte(10);
+  transmitByte(13);
+}

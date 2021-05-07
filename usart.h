@@ -46,3 +46,9 @@ void printHexByte(uint8_t byte);
 uint8_t getNumber(void);
 /* takes in up to three ascii digits,
  converts them to a byte when press enter */
+
+//kode for å skrive desimaltall:
+ void printDecimal(uint16_t number);
+
+//send carriage return og newline på slutten av en linje
+ void crnl(void);
