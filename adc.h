@@ -1,4 +1,4 @@
-#define SENSOR PC0
 
-void adc_init(void);
+
+void adc_init(int pin);
 int adc_read(void);

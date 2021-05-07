@@ -9,6 +9,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "adc.h"
 #include "servo.h"
 #include "int.h"
@@ -17,7 +18,7 @@ uint16_t temp = 0;
 
 int main(void) {
     timer1PWMInit();
-	adc_init();
+	adc_init(0);
 	initInterupt();
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
