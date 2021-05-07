@@ -2,12 +2,12 @@
 #include "adc.h"
 #include <avr/io.h>
 
-int adc_run(void) {
+int adc_read(void) {
    DDRD = 0x00;
    DDRC = 0x00;
    PORTC |= (1<<SENSOR);
    ACSR = (1<<ACBG);
-   adc_init();
+   
    do {
      ADCSRA |= (1<<ADSC);
    } while(1);

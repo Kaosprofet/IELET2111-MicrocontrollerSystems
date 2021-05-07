@@ -17,6 +17,7 @@ uint16_t temp = 0;
 
 int main(void) {
     timer1PWMInit();
+	adc_init();
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
