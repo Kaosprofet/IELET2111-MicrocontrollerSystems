@@ -13,6 +13,7 @@
 #include "adc.h"
 #include "servo.h"
 #include "int.h"
+#include "usart.h"
 
 uint16_t temp = 0;
 
