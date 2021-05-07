@@ -32,9 +32,6 @@ int main(void) {
 		light = light_adc_read();
 		runServo(temp);
 		_delay_ms(1000);
-	
-		
-		
     }
 }
 
