@@ -15,11 +15,12 @@
 #include "int.h"
 #include "usart.h"
 
-int temp = 0;
+uint16_t temp = 0;
 
 int main(void) {
     timer1PWMInit();
 	adc_init(0);
+	initUSART();
 	runServo(0);
 	_delay_ms(1000);
 	initInterupt();
@@ -29,17 +30,16 @@ int main(void) {
 		temp = adc_read();
 		runServo(temp);
 		_delay_ms(1000);
-		printString("Value:" );
-		printDecimal(temp);
-		crnl();
-		
+	
 		
 		
     }
 }
 
 ISR(INT0_vect) {
-	
+	printString("Value:" );
+	printWord(temp);
+	crnl();
 }
 
 ISR(INT1_vect) {

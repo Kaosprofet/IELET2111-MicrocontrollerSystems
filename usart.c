@@ -156,6 +156,10 @@ uint8_t getNumber(void) {
 
 void printDecimal(uint16_t number){
   //send 16 bit unsigned integer as up to 4 decimal digits
+  if(number >=10000)
+  {
+	  transmitByte('0'+(number /10000)%10);
+  }
   if(number >=1000) 
   {
     transmitByte('0'+(number /1000)%10);

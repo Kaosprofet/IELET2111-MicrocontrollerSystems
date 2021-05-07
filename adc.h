@@ -1,4 +1,4 @@
 
 
 void adc_init(int pin);
-int adc_read(void);
+uint16_t adc_read(void);
