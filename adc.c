@@ -1,11 +1,8 @@
 
 #include "adc.h"
+#include <avr/io.h>
 
-#define SENSOR PC0
-
-void adc_init(void);
-
-int main(void) {
+int adc_run(void) {
    DDRD = 0x00;
    DDRC = 0x00;
    PORTC |= (1<<SENSOR);
