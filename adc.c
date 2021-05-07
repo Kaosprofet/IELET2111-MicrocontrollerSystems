@@ -9,7 +9,7 @@ int adc_read(void) {
 }
 
 void adc_init(int pin) {
-  ADMUX = (1<<REFS0);
+  ADMUX = (1<<REFS0)|(1<<ADLAR);
   DIDR0 |= (1<<ADC0D);
   ADCSRA = (1<<ADEN);
 
