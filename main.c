@@ -28,6 +28,7 @@ int main(void) {
 		runServo(temp);
 		_delay_ms(1000);
 		//test
+		//test2
     }
 }
 
