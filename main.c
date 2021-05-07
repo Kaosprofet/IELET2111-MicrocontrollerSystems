@@ -15,25 +15,27 @@
 #include "int.h"
 #include "usart.h"
 
-uint16_t temp = 0;
+int temp = 0;
 
 int main(void) {
     timer1PWMInit();
 	adc_init(0);
+	runServo(0);
+	_delay_ms(1000);
 	initInterupt();
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
 		temp = adc_read();
-		runServo(temp);
-		_delay_ms(1000);
+		//runServo(temp);
+		//_delay_ms(1000);
     }
 }
 
 ISR(INT0_vect) {
-	
+	runServo(255);
 }
 
 ISR(INT1_vect) {
-	
+	runServo(0);
 }

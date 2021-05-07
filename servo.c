@@ -14,9 +14,9 @@ void timer1PWMInit(void) {
 	ICR1 = SERVO_PERIOD;
 }
 
-void runServo(uint16_t temp) {
-	temp = 1023-temp;
-	temp = (temp - ADC_MIN) * (SERVO_MAX - SERVO_MIN) / (ADC_MAX - ADC_MIN) + SERVO_MIN;	// Mapping value for servo
+void runServo(int temp) {
+	temp = 255-temp;
+	temp = temp * (SERVO_MAX - SERVO_MIN) / ADC_MAX + SERVO_MIN;	// Mapping value for servo
 	OCR1A = temp;
 }
 

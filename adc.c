@@ -1,6 +1,7 @@
 
-#include "adc.h"
 #include <avr/io.h>
+#include "adc.h"
+
 
 int adc_read(void) {
   ADCSRA |= (1<<ADSC);
