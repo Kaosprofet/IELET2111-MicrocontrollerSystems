@@ -2,7 +2,7 @@
  * AVRSensor3000.c
  *
  * Created: 23/04/2021 21:37:14
- * Author : Henrik M. Arnesen
+ * Author : Henrik M. Arnesen, Simen Eine, Simen Dager Sneve
  */ 
 
 #define F_CPU 16000000UL
@@ -21,7 +21,7 @@ int main(void) {
     while (1) {
 		//calServo(); // Calibrate the servo to find min/max values
 		
-		temp = 1023; // Bytt ut med ACD lesing
+		temp = adc_read();
 		runServo(temp);
     }
 }

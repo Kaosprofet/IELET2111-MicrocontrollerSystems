@@ -22,5 +22,7 @@ void calServo(void) {
 }
 
 void runServo(uint16_t temp) {
+	temp = 1023-temp;
+	temp = (temp - ADC_MIN) * (SERVO_MAX - SERVO_MIN) / (ADC_MAX - ADC_MIN) + SERVO_MIN;	// Mapping value for servo
 	OCR1A = temp;
 }
