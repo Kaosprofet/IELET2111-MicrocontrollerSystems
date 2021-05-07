@@ -27,8 +27,6 @@ int main(void) {
 		temp = adc_read();
 		runServo(temp);
 		_delay_ms(1000);
-		//test
-		//test2
     }
 }
 
