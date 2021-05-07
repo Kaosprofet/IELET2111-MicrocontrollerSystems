@@ -19,6 +19,7 @@ uint16_t temp = 0;
 
 int main(void) {
     timer1PWMInit();
+	initUSART();
 	adc_init(0);
 	initInterupt();
     while (1) {
@@ -27,6 +28,9 @@ int main(void) {
 		temp = adc_read();
 		runServo(temp);
 		_delay_ms(1000);
+		printString("Value: ");
+		printDecimal(temp);
+		crnl();
     }
 }
 
