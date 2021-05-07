@@ -31,3 +31,7 @@ int main(void) {
 ISR(INT0_vect) {
 	
 }
+
+ISR(INT1_vect) {
+	
+}
