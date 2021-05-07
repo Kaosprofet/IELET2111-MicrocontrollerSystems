@@ -4,7 +4,7 @@
 - **Simen E**:
     - [ ] Skriv et program som printer tekst til skjerm med *SPI*
 - **Simen S**:
-    - [ ] Lag en sensorkrets og mål spenningen med *ADC*
+    - [x] Lag en sensorkrets og mål spenningen med *ADC*
 - **Henrik**:
     - [x] Skriv et program som kjører en servo med *timere*
     - [x] Skriv et program som bruker *interrupt*
